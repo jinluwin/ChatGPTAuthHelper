@@ -1,18 +1,36 @@
 {
   "manifest_version": 2,
   "name": "ChatGPT Auth Helper",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A simple Chrome extension to help you login ChatGPT.",
   "author": "Neo Peng",
   "homepage_url": "https://github.com/pengzhile/ChromeHttpRequestBlocker",
+  "permissions": [
+    "tabs",
+    "<all_urls>",
+    "webRequest",
+    "webRequestBlocking",
+    "storage"
+  ],
   "background": {
     "scripts": [
       "background.js"
-    ]
+    ],
+    "persistent": true
   },
-  "permissions": [
-    "webRequest",
-    "webRequestBlocking",
-    "https://chat.openai.com/*"
+  "web_accessible_resources": [
+    "auth.html",
+    "auth.js",
+    "assets/**"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://ai.fakeopen.com/auth"
+      ],
+      "js": [
+        "content.js"
+      ]
+    }
   ]
 }
