@@ -1,3 +1,7 @@
+chrome.browserAction.onClicked.addListener(function (tab) {
+    chrome.tabs.create({url: 'https://ai.fakeopen.com/auth'});
+});
+
 chrome.webRequest.onBeforeRedirect.addListener(
     function (details) {
         if (details.redirectUrl.startsWith('com.openai.chat://')) {
