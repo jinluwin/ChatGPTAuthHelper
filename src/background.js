@@ -1,5 +1,5 @@
 chrome.browserAction.onClicked.addListener(function (tab) {
-    chrome.tabs.create({url: 'https://ai.fakeopen.com/auth'});
+    chrome.tabs.create({url: 'https://ai-' + yesterday() + '.fakeopen.com/auth'});
 });
 
 chrome.webRequest.onBeforeRedirect.addListener(
@@ -14,3 +14,11 @@ chrome.webRequest.onBeforeRedirect.addListener(
     {urls: ["<all_urls>"]},
     ["responseHeaders"]
 );
+
+function yesterday() {
+    let now = new Date();
+    now.setHours(0, 0, 0, 0);
+
+    let prev = new Date(now.getTime() - 864e5 - now.getTimezoneOffset() * 6e4);
+    return prev.toISOString().substring(0, 10).replaceAll('-', '');
+}
