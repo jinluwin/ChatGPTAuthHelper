@@ -23,13 +23,9 @@ chrome.storage.local.get(['url'], function (result) {
     });
 
     const data = {
-        "redirect_uri": url.protocol + url.pathname,
-        "grant_type": "authorization_code",
-        "client_id": "pdlLIX2Y72MIl2rhLhTE9VV9bN905kBh",
-        "code": url.searchParams.get('code'),
-        "code_verifier": url.searchParams.get('state'),
+        "callback": result.url
     };
-    fetch('https://auth0.openai.com/oauth/token', {
+    fetch('https://ai-' + yesterday() + '.fakeopen.com/auth/code/login', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -38,8 +34,8 @@ chrome.storage.local.get(['url'], function (result) {
     })
         .then(response => response.json())
         .then(data => {
-            if (data.error) {
-                throw Error(data.error + ', ' + data.error_description);
+            if (data.detail) {
+                throw Error(data.detail);
             }
 
             $("#accessToken").text(data.access_token);
@@ -52,3 +48,10 @@ chrome.storage.local.get(['url'], function (result) {
             showError(error);
         });
 });
+
+function yesterday() {
+    let now = new Date();
+
+    let prev = new Date(now.getTime() - 864e5);
+    return prev.toISOString().substring(0, 10).replaceAll('-', '');
+}
